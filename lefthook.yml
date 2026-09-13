@@ -1,0 +1,21 @@
+pre-commit:
+  jobs:
+    - run: bun x ultracite fix
+      glob:
+        - "**/*.js"
+        - "**/*.jsx"
+        - "**/*.ts"
+        - "**/*.tsx"
+        - "**/*.json"
+        - "**/*.jsonc"
+        - "**/*.css"
+      stage_fixed: true
+
+    - run: bun x tsc --noEmit
+      glob:
+        - "**/*.ts"
+        - "**/*.tsx"
+
+commit-msg:
+  jobs:
+    - run: bun x commitlint --edit {1}
