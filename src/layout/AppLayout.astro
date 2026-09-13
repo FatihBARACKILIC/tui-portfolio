@@ -1,0 +1,23 @@
+---
+import { pageTitle } from "@/lib/helpers/page-title";
+
+interface Props {
+  title?: string;
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>
+      {pageTitle(Astro.props.title)}
+    </title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
