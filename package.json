@@ -1,4 +1,30 @@
 {
+  "name": "tui-portfolio",
+  "type": "module",
+  "version": "0.0.1",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FatihBARACKILIC/tui-portfolio/issues",
+    "email": "fatihb469@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FatihBARACKILIC/tui-portfolio.git"
+  },
+  "author": {
+    "name": "Fatih BARAÇKILIÇ",
+    "email": "fatihb469@gmail.com",
+    "url": "https://github.com/FatihBARACKILIC/tui-portfolio"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "ultracite check",
+    "fix": "ultracite fix",
+    "prepare": "lefthook install"
+  },
   "dependencies": {
     "astro": "^7.3.2"
   },
@@ -6,6 +32,7 @@
     "@commitlint/cli": "^21.2.2",
     "@commitlint/config-conventional": "^21.2.2",
     "@eslint/js": "^10.0.0",
+    "@socketsecurity/bun-security-scanner": "^1.1.2",
     "@typescript-eslint/eslint-plugin": "^8.70.0",
     "@typescript-eslint/parser": "^8.70.0",
     "eslint": "^10.0.0",
@@ -37,18 +64,6 @@
     "stylelint-prettier": "^5.0.3",
     "ultracite": "7.11.1"
   },
-  "name": "tui-portfolio",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "check": "ultracite check",
-    "fix": "ultracite fix",
-    "prepare": "lefthook install"
-  },
-  "type": "module",
-  "version": "0.0.1",
   "engines": {
     "node": ">=22.12.0"
   },
