@@ -40,7 +40,7 @@ export const Rule = (properties: RuleProperties) => {
     return (
       <div className={cn(ruleVariants({ variant: "command" }), className)}>
         <span className="text-accent">$</span>
-        <span>{command}</span>
+        <h1>{command}</h1>
         <span className="border-line-dot flex-auto border-t border-dotted" />
         <span className="text-muted text-[0.65rem] tracking-[0.12em]">
           {exitCode}
@@ -52,9 +52,7 @@ export const Rule = (properties: RuleProperties) => {
   const { label, className } = properties;
   return (
     <div className={cn(ruleVariants({ variant: "section" }), className)}>
-      <span className="text-muted text-[0.68rem] tracking-[0.14em]">
-        {label}
-      </span>
+      <h2 className="text-muted text-[0.68rem] tracking-[0.14em]">{label}</h2>
       <span className="border-line-dot flex-auto border-t border-dotted" />
     </div>
   );

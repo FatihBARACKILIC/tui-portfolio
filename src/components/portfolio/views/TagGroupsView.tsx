@@ -51,9 +51,9 @@ export const TagGroupsView = ({
           {variant === "panel" ? (
             <Surface>
               <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2.5">
-                <span className="text-accent text-[0.68rem] tracking-[0.14em]">
+                <h2 className="text-accent text-[0.68rem] tracking-[0.14em]">
                   {group.label}
-                </span>
+                </h2>
                 {group.note ? (
                   <span className="text-muted text-[0.7rem]">{group.note}</span>
                 ) : null}

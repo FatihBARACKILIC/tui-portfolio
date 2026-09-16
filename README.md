@@ -53,7 +53,7 @@ Edit **`src/lib/constants/app.constants.ts`**:
 
 | Field | Appears in |
 | --- | --- |
-| `APP_NAME` | Browser tab title |
+| `APP_NAME` | Name shown in the header bar (the tab title comes from `seo.constants.ts`) |
 | `VERSION`, `ROLE`, `UPTIME`, `LOCATION`, `SHELL`, `DEPLOY` | Header meta row |
 | `PROMPT_USER` | Prompt line (`visitor@tui`) |
 
@@ -135,13 +135,43 @@ To make it real you can, for example:
 1. Put the file in `public/` (e.g. `public/cv.pdf`).
 2. Change the button in `ResumeView.tsx` to an `<a href="/cv.pdf" download>` (or similar), and update `FILE_NAME` / `FILE_META` in `resume.constants.ts`.
 
-### 6. Theme and fonts (optional)
+### 6. SEO and link previews (important)
+
+Two files drive everything search engines and link unfurlers see.
+
+**`astro.config.mjs`** — set `site` to your deployed origin:
+
+```js
+site: "https://your-domain.com",
+```
+
+It ships as `https://example.com`. Canonical links, Open Graph URLs, `robots.txt` and `sitemap.xml` are all built from it, so leaving it unchanged points crawlers at the wrong domain.
+
+**`src/lib/constants/seo.constants.ts`**:
+
+| Field | Purpose |
+| --- | --- |
+| `SITE_NAME` | Suffix in every `<title>` — use your name |
+| `DESCRIPTION` | Home page meta description and fallback |
+| `DESCRIPTION_SUFFIX` | Appended to each command's `desc` on its own page |
+| `OG_IMAGE` / `OG_IMAGE_ALT` | Social preview image (see below) |
+| `LOCALE` | `og:locale` |
+| `LABEL_OVERRIDES` | Casing a slug cannot infer, e.g. `github` → `GitHub` |
+| `PERSON` | schema.org `Person` structured data |
+
+Per-page titles and descriptions are derived automatically: `/career-timeline` becomes `Career Timeline | <SITE_NAME>`, described from that command's own `desc` in `commands.constants.ts`. Commands you add are covered without extra work.
+
+**Social preview image:** `OG_IMAGE` is empty by default, so no `og:image` is emitted rather than a broken reference. To add one, drop a 1200×630 PNG in `public/` and set `OG_IMAGE: "/og.png"`. The Twitter card upgrades from `summary` to `summary_large_image` on its own.
+
+`robots.txt` and `sitemap-index.xml` are generated at build time — there is nothing to maintain by hand. The sitemap matters more here than on a normal site: navigation is entirely client-side, so the site has no internal `<a>` links for a crawler to follow and the sitemap is the only way it discovers every command page.
+
+### 7. Theme and fonts (optional)
 
 Colors and the mono font tokens live in **`src/styles/global.css`** under `@theme` (`--color-accent`, `--color-ink`, `--font-mono`, …).
 
 The IBM Plex Mono link is in **`src/layouts/AppLayout.astro`**. Swap the Google Fonts URL or self-host if you prefer.
 
-### 7. Build and deploy
+### 8. Build and deploy
 
 ```bash
 bun run build
@@ -181,6 +211,7 @@ src/
     index.astro           # /
     [command].astro       # /profile, /projects, …
     404.astro             # unknown URLs → "command not found" output
+    robots.txt.ts         # generated from `site`
   styles/global.css       # theme tokens
   layouts/AppLayout.astro
 ```
@@ -196,6 +227,9 @@ src/
 - [ ] Contact: keep mock or wire a backend
 - [ ] Resume: print mock or real PDF in `public/`
 - [ ] Favicon + `package.json` metadata
+- [ ] `site` in `astro.config.mjs` — real domain, not `example.com`
+- [ ] `seo.constants.ts` — site name, description, `PERSON`
+- [ ] Optional: `public/og.png` + `OG_IMAGE` for link previews
 - [ ] Optional: theme colors in `global.css`
 - [ ] `bun run typecheck` && `bun run build`
 - [ ] Deploy `dist/`

@@ -41,10 +41,18 @@ export default [
     ],
   },
   {
-    files: ["eslint.config.mjs"],
+    files: ["astro.config.mjs", "eslint.config.mjs"],
     rules: {
       "import-x/no-rename-default": "off",
       "sort-keys": "off",
+    },
+  },
+  {
+    // Astro fixes the endpoint export names (GET, POST, ...); they are a
+    // framework contract, not a naming choice.
+    files: ["src/pages/**/*.ts"],
+    rules: {
+      "sonarjs/function-name": "off",
     },
   },
   {

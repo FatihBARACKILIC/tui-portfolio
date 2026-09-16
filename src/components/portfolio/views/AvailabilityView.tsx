@@ -16,9 +16,9 @@ export const AvailabilityView = () => {
       <Surface padding="lg">
         <div className="mb-3 flex items-center gap-2.25">
           <StatusDot tone={tone} />
-          <span className="text-muted text-[0.68rem] tracking-[0.14em]">
+          <h2 className="text-muted text-[0.68rem] tracking-[0.14em]">
             {copy.HEADLINE}
-          </span>
+          </h2>
         </div>
         <p className="mb-2 max-w-[66ch] text-[0.95rem] text-pretty">
           {copy.LINE}

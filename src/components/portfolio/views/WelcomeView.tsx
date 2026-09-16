@@ -5,9 +5,9 @@ import { WELCOME_CONSTANTS } from "@/lib/constants/welcome.constants";
 
 export const WelcomeView = () => (
   <FadeUp>
-    <div className="text-muted mb-3 text-[0.68rem] tracking-[0.14em]">
+    <h1 className="text-muted mb-3 text-[0.68rem] tracking-[0.14em]">
       {WELCOME_CONSTANTS.LABEL}
-    </div>
+    </h1>
     <p className="mb-2.5 max-w-[72ch] text-pretty">{WELCOME_CONSTANTS.INTRO}</p>
     <p className="text-muted mb-6 max-w-[72ch] text-pretty">
       {WELCOME_CONSTANTS.HINT}
