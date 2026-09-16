@@ -4,7 +4,7 @@ export interface ResumeSection {
 }
 
 export const RESUME_CONSTANTS = {
-  FILE_NAME: "fatih_yilmaz_cv.pdf",
+  FILE_NAME: "fatih_cv.pdf",
   FILE_META: "updated 2026 — 08 · 2 pages · 184 KB",
   DOWNLOAD_LABEL: "↓ Download PDF",
   SECTIONS: [

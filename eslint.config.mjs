@@ -30,10 +30,12 @@ export default [
     : []),
   {
     ignores: [
+      ".astro/**",
       ".claude/**",
       ".cursor/**",
       ".vscode/**",
       "design/**",
+      "dist/**",
       "package.json",
       "tsconfig.json",
     ],

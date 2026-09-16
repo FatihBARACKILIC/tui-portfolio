@@ -51,7 +51,7 @@ export const PortfolioHeader = ({
 
       <div className="flex flex-wrap items-center gap-2">
         <div className="text-muted text-[0.68rem] tracking-[0.14em]">
-          QUICK JUMP
+          {SESSION_CONSTANTS.QUICK_JUMP_LABEL}
         </div>
         <div className="flex flex-wrap gap-1.5">
           {SESSION_CONSTANTS.QUICK_JUMP.map((chip) => (
