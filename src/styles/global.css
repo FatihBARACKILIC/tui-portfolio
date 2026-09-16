@@ -1,0 +1,137 @@
+/* stylelint-disable-next-line import-notation */
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #000;
+  --color-panel: #0d0d0d;
+  --color-fg: #ededed;
+  --color-muted: #8f8a80;
+  --color-soft: #b5b0a6;
+  --color-line: rgb(255 255 255 / 10%);
+  --color-line-strong: rgb(255 255 255 / 14%);
+  --color-line-dot: rgb(255 255 255 / 16%);
+  --color-accent: oklch(72% 0.14 255deg);
+  --color-accent-soft: oklch(72% 0.14 255deg / 10%);
+  --color-accent-mid: oklch(72% 0.14 255deg / 20%);
+  --color-accent-line: oklch(72% 0.14 255deg / 35%);
+  --color-ok: oklch(74% 0.16 148deg);
+  --color-ok-soft: oklch(74% 0.16 148deg / 10%);
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    background: var(--color-ink);
+  }
+
+  body {
+    font-family: var(--font-mono);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--color-fg);
+  }
+
+  input,
+  textarea,
+  button {
+    font: inherit;
+  }
+
+  ::placeholder {
+    color: var(--color-muted);
+    opacity: 1;
+  }
+
+  ::selection {
+    background: var(--color-accent-mid);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@utility animate-fade-up {
+  animation: fade-up 0.24s ease-out both;
+}
+
+@utility animate-pop-in {
+  animation: pop-in 0.12s ease-out both;
+}
+
+@utility animate-pop-out {
+  animation: pop-out 0.1s ease-out both;
+}
+
+@utility animate-dot-pulse {
+  animation: dot-pulse 2.4s ease-in-out infinite;
+}
+
+@utility caret-block {
+  caret-shape: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-delay: 0ms !important;
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

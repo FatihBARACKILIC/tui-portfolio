@@ -1,5 +1,8 @@
 import { APP_CONSTANTS } from "../constants/app.constants";
 
 export const pageTitle = (title?: string) => {
-  return title ? `${title} | ${APP_CONSTANTS.APP_NAME}` : APP_CONSTANTS.APP_NAME;
+  if (title === undefined || title.length === 0) {
+    return APP_CONSTANTS.APP_NAME;
+  }
+  return `${title} | ${APP_CONSTANTS.APP_NAME}`;
 };

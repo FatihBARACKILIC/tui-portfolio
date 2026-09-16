@@ -1,0 +1,17 @@
+---
+import PortfolioApp from "@/components/portfolio/PortfolioApp";
+import AppLayout from "@/layouts/AppLayout.astro";
+import { ROUTABLE_COMMANDS } from "@/lib/constants/commands.constants";
+
+export function getStaticPaths() {
+  return ROUTABLE_COMMANDS.map((command) => ({
+    params: { command: command.name },
+  }));
+}
+
+const { command } = Astro.params;
+---
+
+<AppLayout title={command}>
+  <PortfolioApp client:load />
+</AppLayout>
