@@ -2,6 +2,7 @@ import {
   useCallback,
   useEffect,
   useEffectEvent,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -9,22 +10,28 @@ import { SESSION_CONSTANTS } from "@/lib/constants/session.constants";
 import {
   filterCommands,
   findCommand,
-  readRouteFromPath,
   resolveCommand,
 } from "@/lib/helpers/commands";
 import { handlePromptKeyDown } from "@/lib/helpers/prompt-keys";
 import {
   appendHistory,
-  getInitialRoute,
+  getInitialLocation,
   initialPortfolioState,
   pushRoute,
+  readLocation,
   replaceHome,
 } from "@/lib/helpers/portfolio-state";
 import type { KeyboardEvent } from "react";
+import type { CommandName } from "@/lib/constants/commands.constants";
 import type { PortfolioState } from "@/lib/helpers/portfolio-state";
 
-export const usePortfolioRouter = () => {
-  const [state, setState] = useState<PortfolioState>(initialPortfolioState);
+const scrollPadding = 5;
+
+export const usePortfolioRouter = (initialRoute: CommandName | null = null) => {
+  const [state, setState] = useState<PortfolioState>(() => ({
+    ...initialPortfolioState,
+    route: initialRoute,
+  }));
   const inputReference = useRef<HTMLInputElement>(null);
   const popTimeoutReference = useRef<ReturnType<typeof setTimeout> | null>(
     null
@@ -46,8 +53,24 @@ export const usePortfolioRouter = () => {
       clearTimeout(popTimeoutReference.current);
     }
     popTimeoutReference.current = setTimeout(() => {
-      setState((previous) => ({ ...previous, pop: null }));
+      // Only finish a close that is still pending. Without this guard a popover
+      // reopened inside the exit animation gets torn down by the stale timer.
+      setState((previous) =>
+        previous.pop === "closing" ? { ...previous, pop: null } : previous
+      );
     }, SESSION_CONSTANTS.POP_CLOSE_MS);
+  }, []);
+
+  const openPop = useCallback(() => {
+    if (popTimeoutReference.current !== null) {
+      clearTimeout(popTimeoutReference.current);
+      popTimeoutReference.current = null;
+    }
+    setState((previous) => ({ ...previous, pop: "open" }));
+  }, []);
+
+  const focusInput = useCallback(() => {
+    inputReference.current?.focus();
   }, []);
 
   const syncPopScroll = useCallback((index: number) => {
@@ -67,9 +90,9 @@ export const usePortfolioRouter = () => {
       const top = row.offsetTop;
       const bottom = top + row.offsetHeight;
       if (top < box.scrollTop) {
-        box.scrollTop = Math.max(0, top - 5);
+        box.scrollTop = Math.max(0, top - scrollPadding);
       } else if (bottom > box.scrollTop + box.clientHeight) {
-        box.scrollTop = bottom - box.clientHeight + 5;
+        box.scrollTop = bottom - box.clientHeight + scrollPadding;
       }
     }, 0);
   }, []);
@@ -84,8 +107,8 @@ export const usePortfolioRouter = () => {
       sent: false,
     }));
     closePop();
-    inputReference.current?.focus();
-  }, [closePop]);
+    focusInput();
+  }, [closePop, focusInput]);
 
   const run = useCallback(
     (raw: string) => {
@@ -101,6 +124,8 @@ export const usePortfolioRouter = () => {
         return { ...previous, hist, histIdx: -1 };
       });
       closePop();
+      // Chips and popover rows take focus on click; the prompt owns it again.
+      focusInput();
 
       if (name === "clear") {
         clearSession();
@@ -127,19 +152,25 @@ export const usePortfolioRouter = () => {
         route: null,
       }));
     },
-    [clearSession, closePop]
+    [clearSession, closePop, focusInput]
   );
 
   const onPopState = useEffectEvent(() => {
-    const route = readRouteFromPath(window.location.pathname);
-    setState((previous) => ({ ...previous, err: null, route }));
+    const location = readLocation(window.location.pathname);
+    setState((previous) => ({
+      ...previous,
+      err: location.err,
+      route: location.route,
+    }));
   });
 
   useEffect(() => {
-    const initial = getInitialRoute();
-    if (initial !== null) {
-      setState((previous) => ({ ...previous, route: initial }));
-    }
+    const initial = getInitialLocation();
+    setState((previous) =>
+      previous.route === initial.route && previous.err === initial.err
+        ? previous
+        : { ...previous, err: initial.err, route: initial.route }
+    );
     inputReference.current?.focus();
 
     window.addEventListener("popstate", onPopState);
@@ -165,13 +196,15 @@ export const usePortfolioRouter = () => {
       }));
 
       if (value.startsWith("/")) {
-        setState((previous) => ({ ...previous, pop: "open" }));
+        openPop();
       } else if (value.length === 0) {
         closePop();
       }
     },
-    [closePop]
+    [closePop, openPop]
   );
+
+  const filtered = useMemo(() => filterCommands(state.input), [state.input]);
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
@@ -182,9 +215,10 @@ export const usePortfolioRouter = () => {
         hl: state.hl,
         input: state.input,
         isOpen: state.pop === "open",
-        list: filterCommands(state.input),
+        list: filtered,
         openPop: () => {
-          setState((previous) => ({ ...previous, hl: 0, pop: "open" }));
+          setState((previous) => ({ ...previous, hl: 0 }));
+          openPop();
         },
         run,
         setHighlight: (index) => {
@@ -201,6 +235,8 @@ export const usePortfolioRouter = () => {
     },
     [
       closePop,
+      filtered,
+      openPop,
       run,
       state.hist,
       state.histIdx,
@@ -213,8 +249,7 @@ export const usePortfolioRouter = () => {
 
   return {
     clearSession,
-    closePop,
-    filtered: filterCommands(state.input),
+    filtered,
     inputRef: inputReference,
     onInputChange,
     onKeyDown,

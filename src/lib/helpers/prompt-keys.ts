@@ -2,6 +2,8 @@ import { findCommand } from "@/lib/helpers/commands";
 import type { KeyboardEvent } from "react";
 import type { Command } from "@/lib/constants/commands.constants";
 
+const noHistoryBrowse = -1;
+
 interface PromptKeyContext {
   closePop: () => void;
   hist: string[];
@@ -89,10 +91,11 @@ const nextHistoryIndex = (
     return Math.max(0, histIndex - 1);
   }
 
-  if (histIndex < 0) {
-    return -1;
+  // Stepping forward past the newest entry returns to an empty prompt.
+  if (histIndex < 0 || histIndex >= historyLength - 1) {
+    return noHistoryBrowse;
   }
-  return Math.min(historyLength - 1, histIndex + 1);
+  return histIndex + 1;
 };
 
 const didHandleHistoryBrowse = (
@@ -102,10 +105,14 @@ const didHandleHistoryBrowse = (
   if (event.key !== "ArrowUp" && event.key !== "ArrowDown") {
     return false;
   }
-  if (context.input.length > 0) {
+  if (context.hist.length === 0) {
     return false;
   }
-  if (context.hist.length === 0) {
+
+  // Browsing stays available once it has started, even though replaying an
+  // entry fills the input. Typing resets histIdx, which hands the prompt back.
+  const isBrowsing = context.histIdx >= 0;
+  if (!isBrowsing && context.input.length > 0) {
     return false;
   }
 

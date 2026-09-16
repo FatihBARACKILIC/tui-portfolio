@@ -161,9 +161,10 @@ No server is required for the default mock contact flow.
 ## How navigation works
 
 1. User types a command in the prompt (or uses Tab autocomplete / header chips).
-2. The router updates the path with `history.pushState` (e.g. `/projects`).
+2. The router updates the path with `history.pushState` (e.g. `/projects`) — repeating the command you are already on does not add a second history entry.
 3. `RouteOutput` renders the matching view and fills it from constants.
-4. Hard refresh on `/projects` still works: Astro prebuilds each command path.
+4. Hard refresh on `/projects` still works: Astro prebuilds each command path and passes `initialRoute` into the app, so the static HTML already holds that command's output instead of the welcome screen.
+5. An unknown URL falls through to `404.astro`, which renders the same `command not found` output the prompt shows.
 
 `clear` (and aliases like `home`) resets output and returns to `/`.
 
@@ -179,6 +180,7 @@ src/
   pages/
     index.astro           # /
     [command].astro       # /profile, /projects, …
+    404.astro             # unknown URLs → "command not found" output
   styles/global.css       # theme tokens
   layouts/AppLayout.astro
 ```

@@ -1,0 +1,9 @@
+---
+import PortfolioApp from "@/components/portfolio/PortfolioApp";
+import AppLayout from "@/layouts/AppLayout.astro";
+import { SESSION_CONSTANTS } from "@/lib/constants/session.constants";
+---
+
+<AppLayout title={SESSION_CONSTANTS.NOT_FOUND_TITLE}>
+  <PortfolioApp client:load />
+</AppLayout>

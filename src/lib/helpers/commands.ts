@@ -1,6 +1,8 @@
 import { COMMAND_ALIASES, COMMANDS } from "@/lib/constants/commands.constants";
 import type { Command, CommandName } from "@/lib/constants/commands.constants";
 
+const clearCommand: CommandName = "clear";
+
 export const resolveCommand = (name: string): string =>
   COMMAND_ALIASES[name] ?? name;
 
@@ -9,8 +11,17 @@ export const findCommand = (name: string): Command | undefined => {
   return COMMANDS.find((command) => command.name === resolved);
 };
 
-export const isCommandName = (name: string): name is CommandName =>
-  COMMANDS.some((command) => command.name === name);
+/**
+ * Resolves a name to a command that owns a URL. `clear` runs as an action only,
+ * so it never becomes a route even if someone types the path by hand.
+ */
+export const findRoutableCommand = (name: string): CommandName | null => {
+  const command = findCommand(name);
+  if (command === undefined || command.name === clearCommand) {
+    return null;
+  }
+  return command.name;
+};
 
 export const filterCommands = (input: string): Command[] => {
   const query = input.replace(/^\//u, "").toLowerCase().trim();
@@ -25,13 +36,7 @@ export const filterCommands = (input: string): Command[] => {
   return [...starts, ...rest];
 };
 
-export const readRouteFromPath = (pathname: string): CommandName | null => {
-  const segment = pathname.split("/").findLast((part) => part.length > 0);
-  if (segment === undefined) {
-    return null;
-  }
-
-  return findCommand(segment)?.name ?? null;
-};
+export const readPathSegment = (pathname: string): string | null =>
+  pathname.split("/").findLast((part) => part.length > 0) ?? null;
 
 export const routePath = (name: string): string => `/${name}`;

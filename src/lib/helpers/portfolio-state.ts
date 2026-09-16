@@ -1,7 +1,7 @@
 import { SESSION_CONSTANTS } from "@/lib/constants/session.constants";
 import {
-  findCommand,
-  readRouteFromPath,
+  findRoutableCommand,
+  readPathSegment,
   routePath,
 } from "@/lib/helpers/commands";
 import type { CommandName } from "@/lib/constants/commands.constants";
@@ -23,6 +23,11 @@ export interface PortfolioState {
   sent: boolean;
 }
 
+export interface PortfolioLocation {
+  err: string | null;
+  route: CommandName | null;
+}
+
 export const initialPortfolioState: PortfolioState = {
   cEmail: "",
   cMsg: "",
@@ -38,23 +43,58 @@ export const initialPortfolioState: PortfolioState = {
   sent: false,
 };
 
-export const getInitialRoute = (): CommandName | null => {
-  const fromUrl = readRouteFromPath(window.location.pathname);
-  if (fromUrl !== null) {
+/**
+ * Maps a pathname onto what the output pane should show. An unknown segment is
+ * reported as a failed command, which is how the static 404 page renders the
+ * usual "command not found" output.
+ */
+export const readLocation = (pathname: string): PortfolioLocation => {
+  const segment = readPathSegment(pathname);
+  if (segment === null) {
+    return { err: null, route: null };
+  }
+
+  const route = findRoutableCommand(segment);
+  if (route === null) {
+    return { err: segment, route: null };
+  }
+  return { err: null, route };
+};
+
+export const getInitialLocation = (): PortfolioLocation => {
+  const fromUrl = readLocation(window.location.pathname);
+  if (fromUrl.route !== null || fromUrl.err !== null) {
     return fromUrl;
   }
 
   const start = SESSION_CONSTANTS.START_ROUTE.trim();
   if (start.length === 0) {
-    return null;
+    return fromUrl;
   }
 
-  return findCommand(start)?.name ?? null;
+  return { err: null, route: findRoutableCommand(start) };
 };
 
+const stripTrailingSlashes = (value: string): string => {
+  let end = value.length;
+  while (end > 0 && value[end - 1] === "/") {
+    end -= 1;
+  }
+  return value.slice(0, end);
+};
+
+/**
+ * Pushes a route unless the browser is already on it, so repeating a command
+ * does not stack duplicate history entries that the back button has to unwind.
+ */
 export const pushRoute = (name: string): void => {
+  const target = routePath(name);
+  if (stripTrailingSlashes(window.location.pathname) === target) {
+    return;
+  }
+
   try {
-    history.pushState({ r: name }, "", routePath(name));
+    history.pushState({ r: name }, "", target);
   } catch {
     // ignore history failures in constrained environments
   }

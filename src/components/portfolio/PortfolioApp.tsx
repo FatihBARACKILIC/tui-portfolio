@@ -2,8 +2,18 @@ import { PortfolioHeader } from "@/components/portfolio/PortfolioHeader";
 import { PortfolioPrompt } from "@/components/portfolio/PortfolioPrompt";
 import { RouteOutput } from "@/components/portfolio/RouteOutput";
 import { usePortfolioRouter } from "@/components/portfolio/hooks/use-portfolio-router";
+import type { CommandName } from "@/lib/constants/commands.constants";
 
-export default function PortfolioApp() {
+type PortfolioAppProperties = {
+  /**
+  Route the page was prerendered for, so the static HTML matches the URL.
+  */
+  initialRoute?: CommandName | null;
+};
+
+export default function PortfolioApp({
+  initialRoute = null,
+}: PortfolioAppProperties) {
   const {
     state,
     setState,
@@ -14,7 +24,7 @@ export default function PortfolioApp() {
     onInputChange,
     onKeyDown,
     filtered,
-  } = usePortfolioRouter();
+  } = usePortfolioRouter(initialRoute);
 
   return (
     <div className="bg-ink text-fg flex min-h-screen flex-col text-[0.875rem] leading-[1.55]">
