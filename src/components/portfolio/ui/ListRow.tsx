@@ -72,6 +72,7 @@ type SocialRowProperties = {
 
 type CommandRowProperties = {
   variant: "command";
+  id: string;
   name: string;
   desc: string;
   active?: boolean;
@@ -102,6 +103,7 @@ export const ListRow = (properties: ListRowProps) => {
 
   if (properties.variant === "command") {
     const {
+      id,
       name,
       desc,
       active = false,
@@ -110,13 +112,22 @@ export const ListRow = (properties: ListRowProps) => {
       onMouseEnter,
     } = properties;
     return (
+      // Keyboard handling lives on the combobox input that owns this listbox,
+      // which is why the option itself is not focusable.
       <div
+        id={id}
+        role="option"
+        aria-selected={active}
         data-pop-row="1"
         className={cn(
           listRowVariants({ variant: "command", active }),
           className
         )}
         onClick={onClick}
+        onMouseDown={(event) => {
+          // Keep the caret in the prompt: a click must not blur the input.
+          event.preventDefault();
+        }}
         onMouseEnter={onMouseEnter}
       >
         <span className={listMarkerVariants({ variant: "command", active })}>

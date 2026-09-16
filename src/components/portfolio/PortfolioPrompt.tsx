@@ -7,6 +7,10 @@ import type { Command } from "@/lib/constants/commands.constants";
 import type { PopState } from "@/lib/helpers/portfolio-state";
 import type { KeyboardEvent, RefObject } from "react";
 
+const POP_LIST_ID = "command-suggestions";
+
+const optionId = (name: string): string => `command-option-${name}`;
+
 type PortfolioPromptProperties = {
   input: string;
   focused: boolean;
@@ -44,12 +48,18 @@ export const PortfolioPrompt = ({
     ? `${SESSION_CONSTANTS.HINT_ROUTE_PREFIX}${route}`
     : SESSION_CONSTANTS.HINT_READY;
   const isPopVisible = pop !== null;
+  const isPopOpen = pop === "open";
   const highlight = Math.min(hl, Math.max(0, filtered.length - 1));
+  const activeOption = filtered[highlight];
+  const activeDescendant =
+    isPopOpen && activeOption !== undefined
+      ? optionId(activeOption.name)
+      : undefined;
 
   return (
     <div className="border-line bg-ink sticky bottom-0 z-5 border-t px-6.5 pt-3 pb-3.5">
       <div className="relative">
-        <Surface variant="prompt" active={focused || pop !== null}>
+        <Surface variant="prompt" active={focused || isPopVisible}>
           <span className="text-ok shrink-0 text-[0.8rem] whitespace-nowrap">
             {APP_CONSTANTS.PROMPT_USER}
             <span className="text-muted">:~</span>{" "}
@@ -58,10 +68,16 @@ export const PortfolioPrompt = ({
           <input
             ref={inputRef}
             type="text"
+            role="combobox"
+            aria-label={SESSION_CONSTANTS.PROMPT_LABEL}
+            aria-expanded={isPopOpen}
+            aria-controls={POP_LIST_ID}
+            aria-autocomplete="list"
+            aria-activedescendant={activeDescendant}
             value={input}
             spellCheck={false}
             autoComplete="off"
-            placeholder="type a command or press Tab..."
+            placeholder={SESSION_CONSTANTS.PROMPT_PLACEHOLDER}
             onChange={(event) => onInputChange(event.target.value)}
             onKeyDown={onKeyDown}
             onFocus={onFocus}
@@ -79,6 +95,9 @@ export const PortfolioPrompt = ({
         {isPopVisible ? (
           <div
             ref={popBoxRef}
+            id={POP_LIST_ID}
+            role="listbox"
+            aria-label={SESSION_CONSTANTS.POP_LIST_LABEL}
             data-pop-box="1"
             className={cn(
               "border-line bg-panel absolute right-0 bottom-[calc(100%+8px)] left-0 max-h-[min(300px,48vh)] overflow-y-auto overscroll-contain border p-1.25",
@@ -89,6 +108,7 @@ export const PortfolioPrompt = ({
               <ListRow
                 key={option.name}
                 variant="command"
+                id={optionId(option.name)}
                 name={option.name}
                 desc={option.desc}
                 active={index === highlight}
@@ -97,8 +117,11 @@ export const PortfolioPrompt = ({
               />
             ))}
             {filtered.length === 0 ? (
-              <div className="text-muted py-3 text-center text-[0.78rem]">
-                no matching commands
+              <div
+                role="presentation"
+                className="text-muted py-3 text-center text-[0.78rem]"
+              >
+                {SESSION_CONSTANTS.POP_EMPTY}
               </div>
             ) : null}
           </div>

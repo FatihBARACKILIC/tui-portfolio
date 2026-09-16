@@ -9,6 +9,11 @@ export const CONTACT_CONSTANTS = {
       value: "For contract work, mention scope and timeline.",
     },
   },
+  LABELS: {
+    NAME: "Your name",
+    EMAIL: "Your email address",
+    MESSAGE: "Your message",
+  },
   PLACEHOLDERS: {
     NAME: "name",
     EMAIL: "email",
