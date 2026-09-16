@@ -53,8 +53,7 @@ export const usePortfolioRouter = (initialRoute: CommandName | null = null) => {
       clearTimeout(popTimeoutReference.current);
     }
     popTimeoutReference.current = setTimeout(() => {
-      // Only finish a close that is still pending. Without this guard a popover
-      // reopened inside the exit animation gets torn down by the stale timer.
+      // Guard: a popover reopened mid-animation must not be closed by this timer.
       setState((previous) =>
         previous.pop === "closing" ? { ...previous, pop: null } : previous
       );
@@ -124,7 +123,6 @@ export const usePortfolioRouter = (initialRoute: CommandName | null = null) => {
         return { ...previous, hist, histIdx: -1 };
       });
       closePop();
-      // Chips and popover rows take focus on click; the prompt owns it again.
       focusInput();
 
       if (name === "clear") {

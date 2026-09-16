@@ -5,9 +5,6 @@ import { usePortfolioRouter } from "@/components/portfolio/hooks/use-portfolio-r
 import type { CommandName } from "@/lib/constants/commands.constants";
 
 type PortfolioAppProperties = {
-  /**
-  Route the page was prerendered for, so the static HTML matches the URL.
-  */
   initialRoute?: CommandName | null;
 };
 

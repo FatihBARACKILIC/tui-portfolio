@@ -48,8 +48,7 @@ export default [
     },
   },
   {
-    // Astro fixes the endpoint export names (GET, POST, ...); they are a
-    // framework contract, not a naming choice.
+    // Astro fixes endpoint export names (GET, POST, ...)
     files: ["src/pages/**/*.ts"],
     rules: {
       "sonarjs/function-name": "off",

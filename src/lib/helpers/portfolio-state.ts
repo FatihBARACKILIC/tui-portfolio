@@ -43,11 +43,6 @@ export const initialPortfolioState: PortfolioState = {
   sent: false,
 };
 
-/**
- * Maps a pathname onto what the output pane should show. An unknown segment is
- * reported as a failed command, which is how the static 404 page renders the
- * usual "command not found" output.
- */
 export const readLocation = (pathname: string): PortfolioLocation => {
   const segment = readPathSegment(pathname);
   if (segment === null) {
@@ -83,10 +78,6 @@ const stripTrailingSlashes = (value: string): string => {
   return value.slice(0, end);
 };
 
-/**
- * Pushes a route unless the browser is already on it, so repeating a command
- * does not stack duplicate history entries that the back button has to unwind.
- */
 export const pushRoute = (name: string): void => {
   const target = routePath(name);
   if (stripTrailingSlashes(window.location.pathname) === target) {

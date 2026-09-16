@@ -112,8 +112,6 @@ export const ListRow = (properties: ListRowProps) => {
       onMouseEnter,
     } = properties;
     return (
-      // Keyboard handling lives on the combobox input that owns this listbox,
-      // which is why the option itself is not focusable.
       <div
         id={id}
         role="option"
@@ -125,7 +123,6 @@ export const ListRow = (properties: ListRowProps) => {
         )}
         onClick={onClick}
         onMouseDown={(event) => {
-          // Keep the caret in the prompt: a click must not blur the input.
           event.preventDefault();
         }}
         onMouseEnter={onMouseEnter}

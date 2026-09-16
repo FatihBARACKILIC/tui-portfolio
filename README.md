@@ -63,8 +63,14 @@ Then **`src/lib/constants/session.constants.ts`**:
 | --- | --- |
 | `AVAILABLE` | Header status (open / closed to work) |
 | `START_ROUTE` | Optional initial route (`""` or `"/"` = welcome; or e.g. `"profile"`) |
-| `QUICK_JUMP` | Header quick-jump command chips |
+| `QUICK_JUMP` / `QUICK_JUMP_LABEL` | Header quick-jump chips and their caption |
 | `HINT_READY` / `HINT_ROUTE_PREFIX` | Hint text under the prompt |
+| `PROMPT_PLACEHOLDER` | Placeholder inside the prompt input |
+| `POP_EMPTY` | Shown when nothing matches what you typed |
+| `ERROR_SUFFIX` / `ERROR_CODE` | The “command not found” output |
+| `NOT_FOUND_TITLE` | Page name used by `404.astro` |
+| `PROMPT_LABEL` / `POP_LIST_LABEL` | Screen-reader names for the prompt and its suggestion list |
+| `HISTORY_LIMIT` / `POP_CLOSE_MS` | Behaviour knobs — how many commands the prompt remembers, and the popover close animation |
 
 Also update:
 
@@ -99,7 +105,7 @@ Almost every screen is driven by a file under **`src/lib/constants/`**. Change t
 
 Tips:
 
-- Use `current: true` on experience / timeline items you want highlighted with the accent rail.
+- Use `current: true` on experience, timeline or project items you want highlighted with the accent rail.
 - After edits, run `bun run typecheck` — shape mismatches show up immediately.
 - You do **not** need to touch React views for normal text changes.
 
@@ -119,11 +125,15 @@ If you **add or remove** a command:
 2. Wire the route in `src/components/portfolio/RouteOutput.tsx` (or remove the case).
 3. Add or delete the matching `*.constants.ts` file.
 
+Its URL, page title and meta description follow automatically — the title de-slugifies the name (`career-timeline` → `Career Timeline`) and the description reuses the `desc` you wrote. Only add a `LABEL_OVERRIDES` entry in `seo.constants.ts` if the casing needs help, the way `github` → `GitHub` does.
+
 If you only rename copy in `desc`, no other files are required.
 
 ### 5. Contact form and resume (important)
 
 **Contact** (`/contact`) is a **UI mock**: submit sets local “sent” state. Nothing is emailed or posted to an API.
+
+It is a real `<form>` with labelled, `required` fields named `name`, `email` and `message`, so most form services accept it once you give the form an `action`.
 
 To make it real you can, for example:
 
@@ -182,7 +192,7 @@ Deploy the `dist/` folder to any static host, for example:
 - [Cloudflare Pages](https://pages.cloudflare.com)
 - [Vercel](https://vercel.com)
 - [Netlify](https://netlify.com)
-- GitHub Pages (set Astro `site` / `base` in `astro.config.mjs` if the site is not at the domain root)
+- GitHub Pages — `site` is already covered in step 6; also set `base` in `astro.config.mjs` if the site is not served from the domain root
 
 No server is required for the default mock contact flow.
 
@@ -206,7 +216,7 @@ No server is required for the default mock contact flow.
 src/
   components/portfolio/   # App shell, prompt, views, UI primitives
   lib/constants/          # ← edit these for your content
-  lib/helpers/            # routing, stagger, classnames
+  lib/helpers/            # routing, SEO titles, stagger, classnames
   pages/
     index.astro           # /
     [command].astro       # /profile, /projects, …

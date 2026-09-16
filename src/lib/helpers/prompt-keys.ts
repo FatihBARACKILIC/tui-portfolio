@@ -91,7 +91,6 @@ const nextHistoryIndex = (
     return Math.max(0, histIndex - 1);
   }
 
-  // Stepping forward past the newest entry returns to an empty prompt.
   if (histIndex < 0 || histIndex >= historyLength - 1) {
     return noHistoryBrowse;
   }
@@ -109,8 +108,6 @@ const didHandleHistoryBrowse = (
     return false;
   }
 
-  // Browsing stays available once it has started, even though replaying an
-  // entry fills the input. Typing resets histIdx, which hands the prompt back.
   const isBrowsing = context.histIdx >= 0;
   if (!isBrowsing && context.input.length > 0) {
     return false;

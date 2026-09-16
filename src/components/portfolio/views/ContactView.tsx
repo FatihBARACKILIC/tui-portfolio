@@ -28,8 +28,6 @@ export const ContactView = ({
 }: ContactViewProperties) => {
   const { FIELDS, LABELS } = CONTACT_CONSTANTS;
 
-  // The form is a local mock: it never posts anywhere. See the README for
-  // wiring it to a real endpoint.
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     onSubmit();

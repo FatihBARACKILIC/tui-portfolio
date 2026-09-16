@@ -1,9 +1,6 @@
 import { SEO_CONSTANTS } from "@/lib/constants/seo.constants";
 import { findCommand } from "@/lib/helpers/commands";
 
-/**
-"career-timeline" -> "Career Timeline"
-*/
 export const commandLabel = (name: string): string => {
   const override = SEO_CONSTANTS.LABEL_OVERRIDES[name];
   if (override !== undefined) {
@@ -23,10 +20,6 @@ export const pageTitle = (name?: string): string => {
   return `${commandLabel(name)} | ${SEO_CONSTANTS.SITE_NAME}`;
 };
 
-/**
- * Reuses each command's own `desc` so a fork gets per-page descriptions for
- * free, including for commands it adds later.
- */
 export const pageDescription = (name?: string): string => {
   if (name === undefined || name.length === 0) {
     return SEO_CONSTANTS.DESCRIPTION;

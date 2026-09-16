@@ -6,9 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  // REPLACE THIS with your deployed origin before going live. It is what
-  // canonical links, Open Graph URLs and sitemap.xml are built from, so a
-  // stale value points search engines at the wrong domain.
+  // Replace before deploying: canonical, OG and sitemap URLs all derive from this.
   integrations: [react(), sitemap()],
   site: "https://example.com",
   vite: {

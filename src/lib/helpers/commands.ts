@@ -11,10 +11,6 @@ export const findCommand = (name: string): Command | undefined => {
   return COMMANDS.find((command) => command.name === resolved);
 };
 
-/**
- * Resolves a name to a command that owns a URL. `clear` runs as an action only,
- * so it never becomes a route even if someone types the path by hand.
- */
 export const findRoutableCommand = (name: string): CommandName | null => {
   const command = findCommand(name);
   if (command === undefined || command.name === clearCommand) {
