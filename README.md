@@ -1,1 +1,211 @@
 # TUI Portfolio
+
+A terminal-style personal portfolio built with [Astro](https://astro.build) and React. Visitors navigate by typing commands (`/profile`, `/projects`, …). Content lives in plain TypeScript constant files — no CMS required.
+
+**License:** MIT
+
+---
+
+## Quick start
+
+Requirements:
+
+- [Bun](https://bun.sh) (recommended), or Node.js `>= 22.12`
+- Git
+
+```bash
+git clone https://github.com/FatihBARACKILIC/tui-portfolio.git
+cd tui-portfolio
+bun install
+bun run dev
+```
+
+Open the URL printed in the terminal (usually `http://localhost:4321`).
+
+Useful scripts:
+
+| Command                         | What it does                 |
+| ------------------------------- | ---------------------------- |
+| `bun run dev`                   | Local development server     |
+| `bun run build`                 | Production build → `dist/`   |
+| `bun run preview`               | Preview the production build |
+| `bun run typecheck`             | Astro + TypeScript check     |
+| `bun run check` / `bun run fix` | Lint / format (Ultracite)    |
+
+---
+
+## Use this site as your own portfolio
+
+Follow these steps in order.
+
+### 1. Fork or clone
+
+1. Fork the repo on GitHub (or clone it).
+2. Create your own remote if you forked:
+   ```bash
+   git remote set-url origin https://github.com/<you>/<your-repo>.git
+   ```
+3. Install and run locally (`bun install` → `bun run dev`).
+
+### 2. Replace identity and chrome
+
+Edit **`src/lib/constants/app.constants.ts`**:
+
+| Field | Appears in |
+| --- | --- |
+| `APP_NAME` | Browser tab title |
+| `VERSION`, `ROLE`, `UPTIME`, `LOCATION`, `SHELL`, `DEPLOY` | Header meta row |
+| `PROMPT_USER` | Prompt line (`visitor@tui`) |
+
+Then **`src/lib/constants/session.constants.ts`**:
+
+| Field | Purpose |
+| --- | --- |
+| `AVAILABLE` | Header status (open / closed to work) |
+| `START_ROUTE` | Optional initial route (`""` or `"/"` = welcome; or e.g. `"profile"`) |
+| `QUICK_JUMP` | Header quick-jump command chips |
+| `HINT_READY` / `HINT_ROUTE_PREFIX` | Hint text under the prompt |
+
+Also update:
+
+- `package.json` → `name`, `author`, `repository`, `bugs`
+- Favicons under `public/` (`favicon.svg`, `favicon.ico`)
+
+### 3. Replace all page content
+
+Almost every screen is driven by a file under **`src/lib/constants/`**. Change the strings and arrays; keep the TypeScript shapes the same (field names and types).
+
+| File                          | Command / screen                      |
+| ----------------------------- | ------------------------------------- |
+| `welcome.constants.ts`        | Home / MOTD (no route)                |
+| `profile.constants.ts`        | `/profile` intro copy                 |
+| `expertise.constants.ts`      | Expertise list (welcome + profile)    |
+| `experience.constants.ts`     | `/experience`                         |
+| `education.constants.ts`      | `/education`                          |
+| `certifications.constants.ts` | `/certifications`                     |
+| `skills.constants.ts`         | `/skills`                             |
+| `stack.constants.ts`          | `/tech-stack`                         |
+| `projects.constants.ts`       | `/projects`                           |
+| `github.constants.ts`         | `/github` (stats + contrib grid size) |
+| `blog.constants.ts`           | `/blog`                               |
+| `articles.constants.ts`       | `/articles`                           |
+| `resume.constants.ts`         | `/resume`                             |
+| `timeline.constants.ts`       | `/career-timeline`                    |
+| `contact.constants.ts`        | `/contact` labels and “direct” fields |
+| `socials.constants.ts`        | `/socials` links                      |
+| `availability.constants.ts`   | `/availability` + header status copy  |
+| `now.constants.ts`            | `/now`                                |
+| `changelog.constants.ts`      | `/changelog`                          |
+
+Tips:
+
+- Use `current: true` on experience / timeline items you want highlighted with the accent rail.
+- After edits, run `bun run typecheck` — shape mismatches show up immediately.
+- You do **not** need to touch React views for normal text changes.
+
+### 4. Commands, aliases, and URLs
+
+Commands are defined in **`src/lib/constants/commands.constants.ts`**:
+
+- `COMMANDS` — names shown in Tab autocomplete and `/help`
+- `COMMAND_ALIASES` — shortcuts (`whoami` → `profile`, `cv` → `resume`, …)
+- `ROUTABLE_COMMANDS` — everything except `clear` (used for static paths)
+
+Each routable command gets a URL like `/experience` via `src/pages/[command].astro`.
+
+If you **add or remove** a command:
+
+1. Update `CommandName`, `COMMANDS`, and aliases.
+2. Wire the route in `src/components/portfolio/RouteOutput.tsx` (or remove the case).
+3. Add or delete the matching `*.constants.ts` file.
+
+If you only rename copy in `desc`, no other files are required.
+
+### 5. Contact form and resume (important)
+
+**Contact** (`/contact`) is a **UI mock**: submit sets local “sent” state. Nothing is emailed or posted to an API.
+
+To make it real you can, for example:
+
+- Point the form at a service (Formspree, Basin, your own endpoint), or
+- Keep the form as-is and rely on the “direct” mail/links in `contact.constants.ts` / `socials.constants.ts`
+
+**Resume** download currently calls `window.print()` — it does not serve a PDF file. To offer a real PDF:
+
+1. Put the file in `public/` (e.g. `public/cv.pdf`).
+2. Change the button in `ResumeView.tsx` to an `<a href="/cv.pdf" download>` (or similar), and update `FILE_NAME` / `FILE_META` in `resume.constants.ts`.
+
+### 6. Theme and fonts (optional)
+
+Colors and the mono font tokens live in **`src/styles/global.css`** under `@theme` (`--color-accent`, `--color-ink`, `--font-mono`, …).
+
+The IBM Plex Mono link is in **`src/layouts/AppLayout.astro`**. Swap the Google Fonts URL or self-host if you prefer.
+
+### 7. Build and deploy
+
+```bash
+bun run build
+```
+
+Deploy the `dist/` folder to any static host, for example:
+
+- [Cloudflare Pages](https://pages.cloudflare.com)
+- [Vercel](https://vercel.com)
+- [Netlify](https://netlify.com)
+- GitHub Pages (set Astro `site` / `base` in `astro.config.mjs` if the site is not at the domain root)
+
+No server is required for the default mock contact flow.
+
+---
+
+## How navigation works
+
+1. User types a command in the prompt (or uses Tab autocomplete / header chips).
+2. The router updates the path with `history.pushState` (e.g. `/projects`).
+3. `RouteOutput` renders the matching view and fills it from constants.
+4. Hard refresh on `/projects` still works: Astro prebuilds each command path.
+
+`clear` (and aliases like `home`) resets output and returns to `/`.
+
+---
+
+## Project map
+
+```
+src/
+  components/portfolio/   # App shell, prompt, views, UI primitives
+  lib/constants/          # ← edit these for your content
+  lib/helpers/            # routing, stagger, classnames
+  pages/
+    index.astro           # /
+    [command].astro       # /profile, /projects, …
+  styles/global.css       # theme tokens
+  layouts/AppLayout.astro
+```
+
+---
+
+## Checklist for a personal fork
+
+- [ ] `app.constants.ts` — name, role, location, prompt user
+- [ ] `session.constants.ts` — availability, quick jumps, hints
+- [ ] Every content file under `src/lib/constants/`
+- [ ] `socials.constants.ts` — real URLs
+- [ ] Contact: keep mock or wire a backend
+- [ ] Resume: print mock or real PDF in `public/`
+- [ ] Favicon + `package.json` metadata
+- [ ] Optional: theme colors in `global.css`
+- [ ] `bun run typecheck` && `bun run build`
+- [ ] Deploy `dist/`
+
+---
+
+## Contributing
+
+Issues and PRs are welcome. Please run `bun run fix` and `bun run typecheck` before opening a PR. Commits follow [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, …).
+
+---
+
+## License
+
+MIT — see the repository license. Keep the license file when you redistribute; replace the sample content with your own.
