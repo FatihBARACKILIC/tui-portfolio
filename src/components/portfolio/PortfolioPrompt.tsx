@@ -86,7 +86,7 @@ export const PortfolioPrompt = ({
           />
           <span className="text-muted flex shrink-0 gap-1.5 text-[0.68rem]">
             <span className="border-line border px-1.5 py-0.5">↵ run</span>
-            <span className="border-line border px-1.5 py-0.5">
+            <span className="border-line hidden border px-1.5 py-0.5 sm:inline">
               tab complete
             </span>
           </span>
