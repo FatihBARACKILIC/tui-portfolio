@@ -1,4 +1,5 @@
 import { COMMAND_ALIASES, COMMANDS } from "@/lib/constants/commands.constants";
+import { stripBase, withBase } from "@/lib/helpers/base-path";
 import type { Command, CommandName } from "@/lib/constants/commands.constants";
 
 const clearCommand: CommandName = "clear";
@@ -33,6 +34,8 @@ export const filterCommands = (input: string): Command[] => {
 };
 
 export const readPathSegment = (pathname: string): string | null =>
-  pathname.split("/").findLast((part) => part.length > 0) ?? null;
+  stripBase(pathname)
+    .split("/")
+    .findLast((part) => part.length > 0) ?? null;
 
-export const routePath = (name: string): string => `/${name}`;
+export const routePath = (name: string): string => withBase(name);

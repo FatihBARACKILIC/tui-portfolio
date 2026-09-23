@@ -1,10 +1,18 @@
 import type { APIRoute } from "astro";
 
+const normalizeBase = (base: string): string => {
+  if (base === "" || base === "/") {
+    return "/";
+  }
+  return base.endsWith("/") ? base : `${base}/`;
+};
+
 const sitemapLine = (site: URL | undefined): string => {
   if (site === undefined) {
     return "";
   }
-  const sitemapUrl = new URL("sitemap-index.xml", site);
+  const baseUrl = new URL(normalizeBase(import.meta.env.BASE_URL), site);
+  const sitemapUrl = new URL("sitemap-index.xml", baseUrl);
   return `Sitemap: ${sitemapUrl.href}\n`;
 };
 

@@ -1,4 +1,5 @@
 import { SESSION_CONSTANTS } from "@/lib/constants/session.constants";
+import { appBase } from "@/lib/helpers/base-path";
 import {
   findRoutableCommand,
   readPathSegment,
@@ -93,7 +94,7 @@ export const pushRoute = (name: string): void => {
 
 export const replaceHome = (): void => {
   try {
-    history.replaceState({}, "", "/");
+    history.replaceState({}, "", appBase());
   } catch {
     // ignore history failures in constrained environments
   }

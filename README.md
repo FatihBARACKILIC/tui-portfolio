@@ -149,13 +149,14 @@ To make it real you can, for example:
 
 Two files drive everything search engines and link unfurlers see.
 
-**`astro.config.mjs`** — set `site` to your deployed origin:
+**`astro.config.mjs`** — set `site` (and `base` for project Pages) to your deployed URL:
 
 ```js
-site: "https://your-domain.com",
+site: "https://fatihbarackilic.github.io",
+base: "/tui-portfolio",
 ```
 
-It ships as `https://example.com`. Canonical links, Open Graph URLs, `robots.txt` and `sitemap.xml` are all built from it, so leaving it unchanged points crawlers at the wrong domain.
+Canonical links, Open Graph URLs, `robots.txt` and `sitemap.xml` are all built from these, so leaving a placeholder domain points crawlers at the wrong place.
 
 **`src/lib/constants/seo.constants.ts`**:
 
@@ -192,7 +193,9 @@ Deploy the `dist/` folder to any static host, for example:
 - [Cloudflare Pages](https://pages.cloudflare.com)
 - [Vercel](https://vercel.com)
 - [Netlify](https://netlify.com)
-- GitHub Pages — `site` is already covered in step 6; also set `base` in `astro.config.mjs` if the site is not served from the domain root
+- **GitHub Pages** — this repo ships a workflow (`.github/workflows/deploy.yml`). After you push to `main`:
+  1. Repo **Settings → Pages → Source** → choose **GitHub Actions**.
+  2. Confirm `site` / `base` in `astro.config.mjs` match your Pages URL (`https://<user>.github.io/<repo>/`). For a custom domain at the root, set `site` to that origin and remove `base`.
 
 No server is required for the default mock contact flow.
 
@@ -237,12 +240,12 @@ src/
 - [ ] Contact: keep mock or wire a backend
 - [ ] Resume: print mock or real PDF in `public/`
 - [ ] Favicon + `package.json` metadata
-- [ ] `site` in `astro.config.mjs` — real domain, not `example.com`
+- [ ] `site` / `base` in `astro.config.mjs` — real GitHub Pages or custom domain URL
 - [ ] `seo.constants.ts` — site name, description, `PERSON`
 - [ ] Optional: `public/og.png` + `OG_IMAGE` for link previews
 - [ ] Optional: theme colors in `global.css`
 - [ ] `bun run typecheck` && `bun run build`
-- [ ] Deploy `dist/`
+- [ ] Deploy `dist/` (GitHub Pages: enable Actions under Settings → Pages)
 
 ---
 

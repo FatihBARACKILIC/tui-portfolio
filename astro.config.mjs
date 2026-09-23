@@ -6,9 +6,11 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  // Replace before deploying: canonical, OG and sitemap URLs all derive from this.
+  // GitHub Pages: https://<user>.github.io/<repo>/
+  // Custom domain at root? Set site to that origin and remove `base`.
   integrations: [react(), sitemap()],
-  site: "https://example.com",
+  site: "https://fatihbarackilic.github.io",
+  base: "/tui-portfolio",
   vite: {
     plugins: [tailwindcss()],
   },

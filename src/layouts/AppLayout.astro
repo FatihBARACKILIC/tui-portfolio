@@ -12,10 +12,14 @@ const { title, noindex = false } = Astro.props;
 
 const resolvedTitle = pageTitle(title);
 const description = pageDescription(title);
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const baseUrl = new URL(base, Astro.site);
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage =
   SEO_CONSTANTS.OG_IMAGE.length > 0
-    ? new URL(SEO_CONSTANTS.OG_IMAGE, Astro.site).href
+    ? new URL(SEO_CONSTANTS.OG_IMAGE.replace(/^\//u, ""), baseUrl).href
     : null;
 
 const personSchema = {
@@ -23,7 +27,7 @@ const personSchema = {
   "@type": "Person",
   name: SEO_CONSTANTS.PERSON.name,
   jobTitle: SEO_CONSTANTS.PERSON.jobTitle,
-  url: new URL("/", Astro.site).href,
+  url: baseUrl.href,
   sameAs: SEO_CONSTANTS.PERSON.sameAs,
 };
 ---
@@ -58,8 +62,8 @@ const personSchema = {
     <meta name="twitter:description" content={description} />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
 
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <link rel="icon" href={`${base}favicon.ico`} sizes="any" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
