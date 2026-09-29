@@ -42,12 +42,9 @@ export const usePortfolioRouter = (initialRoute: CommandName | null = null) => {
   const popBoxReference = useRef<HTMLDivElement>(null);
 
   const closePop = useCallback(() => {
-    setState((previous) => {
-      if (previous.pop === null) {
-        return previous;
-      }
-      return { ...previous, pop: "closing" };
-    });
+    setState((previous) =>
+      previous.pop === null ? previous : { ...previous, pop: "closing" }
+    );
 
     if (popTimeoutReference.current !== null) {
       clearTimeout(popTimeoutReference.current);

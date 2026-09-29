@@ -1,5 +1,5 @@
 export const SESSION_CONSTANTS = {
-  AVAILABLE: true,
+  AVAILABLE: true as boolean,
   START_ROUTE: "/" as string,
   HISTORY_LIMIT: 30,
   POP_CLOSE_MS: 110,

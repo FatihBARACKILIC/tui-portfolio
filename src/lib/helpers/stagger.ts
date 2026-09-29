@@ -5,13 +5,11 @@ export type Staggered<T> = T & {
   tone: RailTone;
 };
 
-const isCurrentItem = (item: unknown): boolean => {
-  if (typeof item !== "object" || item === null || !("current" in item)) {
-    return false;
-  }
-
-  return Reflect.get(item, "current") === true;
-};
+const isCurrentItem = (item: unknown): boolean =>
+  typeof item === "object" &&
+  item !== null &&
+  "current" in item &&
+  Reflect.get(item, "current") === true;
 
 export const withStagger = <T>(
   items: readonly T[],

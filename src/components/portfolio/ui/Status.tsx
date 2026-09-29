@@ -41,12 +41,12 @@ export const StatusDot = ({
   />
 );
 
-type StatusBadgeProperties = {
+interface StatusBadgeProperties {
   label: string;
   tone?: "ok" | "muted";
   pulse?: boolean;
   className?: string;
-};
+}
 
 export const StatusBadge = ({
   label,

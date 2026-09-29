@@ -38,8 +38,7 @@ export const stripBase = (pathname: string): string => {
   if (pathname === base || pathname === `${base}/`) {
     return "/";
   }
-  if (pathname.startsWith(`${base}/`)) {
-    return pathname.slice(base.length);
-  }
-  return pathname;
+  return pathname.startsWith(`${base}/`)
+    ? pathname.slice(base.length)
+    : pathname;
 };

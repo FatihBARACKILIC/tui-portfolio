@@ -4,9 +4,9 @@ import { RouteOutput } from "@/components/portfolio/RouteOutput";
 import { usePortfolioRouter } from "@/components/portfolio/hooks/use-portfolio-router";
 import type { CommandName } from "@/lib/constants/commands.constants";
 
-type PortfolioAppProperties = {
+interface PortfolioAppProperties {
   initialRoute?: CommandName | null;
-};
+}
 
 export default function PortfolioApp({
   initialRoute = null,
@@ -36,18 +36,18 @@ export default function PortfolioApp({
             cName={state.cName}
             cEmail={state.cEmail}
             cMsg={state.cMsg}
-            onName={(value) =>
-              setState((previous) => ({ ...previous, cName: value }))
-            }
-            onEmail={(value) =>
-              setState((previous) => ({ ...previous, cEmail: value }))
-            }
-            onMsg={(value) =>
-              setState((previous) => ({ ...previous, cMsg: value }))
-            }
-            onSubmit={() =>
-              setState((previous) => ({ ...previous, sent: true }))
-            }
+            onName={(value) => {
+              setState((previous) => ({ ...previous, cName: value }));
+            }}
+            onEmail={(value) => {
+              setState((previous) => ({ ...previous, cEmail: value }));
+            }}
+            onMsg={(value) => {
+              setState((previous) => ({ ...previous, cMsg: value }));
+            }}
+            onSubmit={() => {
+              setState((previous) => ({ ...previous, sent: true }));
+            }}
           />
         </div>
 
@@ -62,15 +62,15 @@ export default function PortfolioApp({
           popBoxRef={popBoxRef}
           onInputChange={onInputChange}
           onKeyDown={onKeyDown}
-          onFocus={() =>
-            setState((previous) => ({ ...previous, focused: true }))
-          }
-          onBlur={() =>
-            setState((previous) => ({ ...previous, focused: false }))
-          }
-          onHover={(index) =>
-            setState((previous) => ({ ...previous, hl: index }))
-          }
+          onFocus={() => {
+            setState((previous) => ({ ...previous, focused: true }));
+          }}
+          onBlur={() => {
+            setState((previous) => ({ ...previous, focused: false }));
+          }}
+          onHover={(index) => {
+            setState((previous) => ({ ...previous, hl: index }));
+          }}
           onPick={run}
         />
       </main>

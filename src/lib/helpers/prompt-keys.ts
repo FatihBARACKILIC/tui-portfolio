@@ -85,16 +85,12 @@ const nextHistoryIndex = (
   historyLength: number
 ): number => {
   if (key === "ArrowUp") {
-    if (histIndex < 0) {
-      return historyLength - 1;
-    }
-    return Math.max(0, histIndex - 1);
+    return histIndex < 0 ? historyLength - 1 : Math.max(0, histIndex - 1);
   }
 
-  if (histIndex < 0 || histIndex >= historyLength - 1) {
-    return noHistoryBrowse;
-  }
-  return histIndex + 1;
+  return histIndex < 0 || histIndex >= historyLength - 1
+    ? noHistoryBrowse
+    : histIndex + 1;
 };
 
 const didHandleHistoryBrowse = (
@@ -134,11 +130,10 @@ export const handlePromptKeyDown = (
     return;
   }
 
-  if (didHandleOpenNav(event, context)) {
-    return;
-  }
-
-  if (didHandleOpenComplete(event, context)) {
+  if (
+    didHandleOpenNav(event, context) ||
+    didHandleOpenComplete(event, context)
+  ) {
     return;
   }
 

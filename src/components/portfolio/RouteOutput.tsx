@@ -26,7 +26,7 @@ import { TIMELINE_CONSTANTS } from "@/lib/constants/timeline.constants";
 import type { CommandName } from "@/lib/constants/commands.constants";
 import type { ReactNode } from "react";
 
-type ContactHandlers = {
+interface ContactHandlers {
   sent: boolean;
   cName: string;
   cEmail: string;
@@ -35,7 +35,7 @@ type ContactHandlers = {
   onEmail: (value: string) => void;
   onMsg: (value: string) => void;
   onSubmit: () => void;
-};
+}
 
 type RouteOutputProperties = {
   route: CommandName | null;
@@ -173,6 +173,9 @@ const renderRoute = (
     case "changelog": {
       return <DatedListView variant="log" items={CHANGELOG_ITEMS} />;
     }
+    case "clear": {
+      return null;
+    }
     default: {
       return null;
     }
@@ -191,11 +194,11 @@ export const RouteOutput = ({
   onMsg,
   onSubmit,
 }: RouteOutputProperties) => {
-  if (err) {
+  if (err !== null) {
     return <ErrorView input={err} />;
   }
 
-  if (!route) {
+  if (route === null) {
     return <WelcomeView />;
   }
 

@@ -6,7 +6,7 @@ import { withStagger } from "@/lib/helpers/stagger";
 export const datedItemVariants = cva("", {
   variants: {
     variant: {
-      post: "mb-4 border-b border-dotted border-line-strong pb-4",
+      post: "border-line-strong mb-4 border-b border-dotted pb-4",
       log: "flex gap-4 pb-3.5",
     },
   },
@@ -15,30 +15,30 @@ export const datedItemVariants = cva("", {
   },
 });
 
-type PostItem = {
+interface PostItem {
   key: string;
   date: string;
   title: string;
   body: string;
-};
+}
 
-type LogItem = {
+interface LogItem {
   key: string;
   date: string;
   body: string;
-};
+}
 
-type PostProperties = {
+interface PostProperties {
   variant?: "post";
   items: readonly PostItem[];
   baseDelay?: number;
-};
+}
 
-type LogProperties = {
+interface LogProperties {
   variant: "log";
   items: readonly LogItem[];
   baseDelay?: number;
-};
+}
 
 export type DatedListViewProps = PostProperties | LogProperties;
 

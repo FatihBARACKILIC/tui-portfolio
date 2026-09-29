@@ -5,9 +5,9 @@ import type { ComponentProps } from "react";
 export const listRowVariants = cva("flex", {
   variants: {
     variant: {
-      meta: "flex-wrap items-baseline gap-x-3.5 gap-y-1 border-b border-dotted border-line-strong py-2.75",
+      meta: "border-line-strong flex-wrap items-baseline gap-x-3.5 gap-y-1 border-b border-dotted py-2.75",
       social:
-        "items-center gap-3.5 border-b border-dotted border-line-strong px-0.5 py-3 text-fg transition-colors duration-150 ease-out hover:text-accent",
+        "border-line-strong text-fg hover:text-accent items-center gap-3.5 border-b border-dotted px-0.5 py-3 transition-colors duration-150 ease-out",
       command: "cursor-pointer items-baseline gap-3 px-2.25 py-1.5",
     },
     active: {
@@ -19,7 +19,7 @@ export const listRowVariants = cva("flex", {
     {
       variant: "command",
       active: false,
-      class: "bg-transparent text-fg",
+      class: "text-fg bg-transparent",
     },
   ],
   defaultVariants: {
@@ -32,7 +32,7 @@ export const listMarkerVariants = cva("shrink-0", {
   variants: {
     variant: {
       meta: "text-accent",
-      social: "w-6.5 text-[0.76rem] text-ok",
+      social: "text-ok w-6.5 text-[0.76rem]",
       command: "w-2.25",
     },
     active: {
@@ -53,22 +53,22 @@ export const listMarkerVariants = cva("shrink-0", {
   },
 });
 
-type MetaRowProperties = {
+interface MetaRowProperties {
   variant?: "meta";
   title: string;
   meta: string;
   date: string;
   className?: string;
-};
+}
 
-type SocialRowProperties = {
+interface SocialRowProperties {
   variant: "social";
   href: string;
   icon: string;
   label: string;
   handle: string;
   className?: string;
-};
+}
 
 type CommandRowProperties = {
   variant: "command";

@@ -3,7 +3,7 @@ import { Rail } from "@/components/portfolio/ui/Rail";
 import { withStagger } from "@/lib/helpers/stagger";
 import type { RailTone } from "@/lib/helpers/stagger";
 
-type DetailEntry = {
+interface DetailEntry {
   key: string;
   title: string;
   subtitle: string;
@@ -11,27 +11,27 @@ type DetailEntry = {
   body: string;
   current?: boolean;
   tone?: RailTone;
-};
+}
 
-type TimelineEntry = {
+interface TimelineEntry {
   key: string;
   year: string;
   event: string;
   current?: boolean;
   tone?: RailTone;
-};
+}
 
-type DetailProperties = {
+interface DetailProperties {
   variant?: "detail" | "stacked";
   items: readonly DetailEntry[];
   baseDelay?: number;
-};
+}
 
-type TimelineProperties = {
+interface TimelineProperties {
   variant: "timeline";
   items: readonly TimelineEntry[];
   baseDelay?: number;
-};
+}
 
 export type RailEntriesViewProps = DetailProperties | TimelineProperties;
 
@@ -44,11 +44,7 @@ export const RailEntriesView = (properties: RailEntriesViewProps) => {
       <div>
         {items.map((item) => (
           <FadeUp key={item.key} delayMs={item.delayMs}>
-            <Rail
-              tone={item.tone ?? "line"}
-              spacing="timeline"
-              className="flex gap-4"
-            >
+            <Rail tone={item.tone} spacing="timeline" className="flex gap-4">
               <span className="text-muted w-11 shrink-0 text-[0.78rem]">
                 {item.year}
               </span>
@@ -69,7 +65,7 @@ export const RailEntriesView = (properties: RailEntriesViewProps) => {
     <div>
       {items.map((item) => (
         <FadeUp key={item.key} delayMs={item.delayMs}>
-          <Rail tone={item.tone ?? "line"}>
+          <Rail tone={item.tone}>
             {isStacked ? (
               <>
                 <div className="mb-0.75">{item.title}</div>

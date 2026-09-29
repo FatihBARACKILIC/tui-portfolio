@@ -2,9 +2,9 @@ import { FadeUp } from "@/components/portfolio/ui/FadeUp";
 import { Rule } from "@/components/portfolio/ui/Rule";
 import { SESSION_CONSTANTS } from "@/lib/constants/session.constants";
 
-type ErrorViewProperties = {
+interface ErrorViewProperties {
   input: string;
-};
+}
 
 export function ErrorView({ input }: ErrorViewProperties) {
   return (

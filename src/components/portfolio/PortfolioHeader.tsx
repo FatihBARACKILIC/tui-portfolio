@@ -5,10 +5,10 @@ import { APP_CONSTANTS } from "@/lib/constants/app.constants";
 import { AVAILABILITY_CONSTANTS } from "@/lib/constants/availability.constants";
 import { SESSION_CONSTANTS } from "@/lib/constants/session.constants";
 
-type PortfolioHeaderProperties = {
+interface PortfolioHeaderProperties {
   onRun: (command: string) => void;
   onClear: () => void;
-};
+}
 
 const META = [
   { label: "ROLE", value: APP_CONSTANTS.ROLE },
@@ -55,7 +55,13 @@ export const PortfolioHeader = ({
         </div>
         <div className="flex flex-wrap gap-1.5">
           {SESSION_CONSTANTS.QUICK_JUMP.map((chip) => (
-            <Button key={chip} variant="chip" onClick={() => onRun(chip)}>
+            <Button
+              key={chip}
+              variant="chip"
+              onClick={() => {
+                onRun(chip);
+              }}
+            >
               {chip}
             </Button>
           ))}

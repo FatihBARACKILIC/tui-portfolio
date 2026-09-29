@@ -2,32 +2,32 @@ import { FadeUp } from "@/components/portfolio/ui/FadeUp";
 import { ListRow } from "@/components/portfolio/ui/ListRow";
 import { withStagger } from "@/lib/helpers/stagger";
 
-type MetaItem = {
+interface MetaItem {
   key: string;
   title: string;
   meta: string;
   date: string;
-};
+}
 
-type SocialItem = {
+interface SocialItem {
   key: string;
   href: string;
   icon: string;
   label: string;
   handle: string;
-};
+}
 
-type MetaProperties = {
+interface MetaProperties {
   variant?: "meta";
   items: readonly MetaItem[];
   baseDelay?: number;
-};
+}
 
-type SocialProperties = {
+interface SocialProperties {
   variant: "social";
   items: readonly SocialItem[];
   baseDelay?: number;
-};
+}
 
 export type MetaListViewProps = MetaProperties | SocialProperties;
 

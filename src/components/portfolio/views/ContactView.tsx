@@ -5,7 +5,7 @@ import { Rule } from "@/components/portfolio/ui/Rule";
 import { CONTACT_CONSTANTS } from "@/lib/constants/contact.constants";
 import type { SubmitEventHandler } from "react";
 
-type ContactViewProperties = {
+interface ContactViewProperties {
   sent: boolean;
   cName: string;
   cEmail: string;
@@ -14,7 +14,7 @@ type ContactViewProperties = {
   onEmail: (value: string) => void;
   onMsg: (value: string) => void;
   onSubmit: () => void;
-};
+}
 
 export const ContactView = ({
   sent,
@@ -51,7 +51,9 @@ export const ContactView = ({
               type="text"
               required
               value={cName}
-              onChange={(event) => onName(event.target.value)}
+              onChange={(event) => {
+                onName(event.target.value);
+              }}
               placeholder={CONTACT_CONSTANTS.PLACEHOLDERS.NAME}
             />
 
@@ -64,7 +66,9 @@ export const ContactView = ({
               type="email"
               required
               value={cEmail}
-              onChange={(event) => onEmail(event.target.value)}
+              onChange={(event) => {
+                onEmail(event.target.value);
+              }}
               placeholder={CONTACT_CONSTANTS.PLACEHOLDERS.EMAIL}
             />
 
@@ -78,7 +82,9 @@ export const ContactView = ({
               required
               rows={5}
               value={cMsg}
-              onChange={(event) => onMsg(event.target.value)}
+              onChange={(event) => {
+                onMsg(event.target.value);
+              }}
               placeholder={CONTACT_CONSTANTS.PLACEHOLDERS.MESSAGE}
             />
 

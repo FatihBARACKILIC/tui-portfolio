@@ -7,7 +7,7 @@ export const ruleVariants = cva("flex items-center gap-2.5", {
   variants: {
     variant: {
       section: "mb-3.5",
-      command: "mb-5.5 animate-fade-up",
+      command: "animate-fade-up mb-5.5",
     },
   },
   defaultVariants: {
@@ -16,21 +16,21 @@ export const ruleVariants = cva("flex items-center gap-2.5", {
 });
 
 export const metaLabelVariants = cva(
-  "text-[0.68rem] tracking-widest text-muted"
+  "text-muted text-[0.68rem] tracking-widest"
 );
 
-type SectionRuleProperties = {
+interface SectionRuleProperties {
   variant?: "section";
   label: string;
   className?: string;
-};
+}
 
-type CommandRuleProperties = {
+interface CommandRuleProperties {
   variant: "command";
   command: string;
   exitCode?: string;
   className?: string;
-};
+}
 
 type RuleProperties = SectionRuleProperties | CommandRuleProperties;
 

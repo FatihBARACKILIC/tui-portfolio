@@ -3,12 +3,12 @@ import { cn } from "@/lib/helpers/cn";
 import type { VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
 
-export const surfaceVariants = cva("border bg-panel", {
+export const surfaceVariants = cva("bg-panel border", {
   variants: {
     variant: {
       panel: "border-line",
       prompt:
-        "flex items-center gap-2.5 border-line px-3.25 py-2.75 transition-[border-color] duration-150 ease-out",
+        "border-line flex items-center gap-2.5 px-3.25 py-2.75 transition-[border-color] duration-150 ease-out",
     },
     padding: {
       none: "",
@@ -22,7 +22,7 @@ export const surfaceVariants = cva("border bg-panel", {
       false: "",
     },
     interactive: {
-      true: "transition-[border-color] duration-150 ease-out hover:border-accent",
+      true: "hover:border-accent transition-[border-color] duration-150 ease-out",
       false: "",
     },
   },

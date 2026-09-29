@@ -4,7 +4,7 @@ import type { VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
 
 export const fieldVariants = cva(
-  "w-full border border-line bg-panel px-3 py-2.5 text-[0.82rem] text-fg caret-accent caret-block outline-none transition-[border-color] duration-150 ease-out focus:border-accent"
+  "border-line bg-panel text-fg caret-accent caret-block focus:border-accent w-full border px-3 py-2.5 text-[0.82rem] transition-[border-color] duration-150 ease-out outline-none"
 );
 
 type InputProperties = ComponentProps<"input"> & {

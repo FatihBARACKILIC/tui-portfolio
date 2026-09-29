@@ -11,7 +11,7 @@ const POP_LIST_ID = "command-suggestions";
 
 const optionId = (name: string): string => `command-option-${name}`;
 
-type PortfolioPromptProperties = {
+interface PortfolioPromptProperties {
   input: string;
   focused: boolean;
   pop: PopState;
@@ -26,7 +26,7 @@ type PortfolioPromptProperties = {
   onBlur: () => void;
   onHover: (index: number) => void;
   onPick: (name: string) => void;
-};
+}
 
 export const PortfolioPrompt = ({
   input,
@@ -44,16 +44,16 @@ export const PortfolioPrompt = ({
   onHover,
   onPick,
 }: PortfolioPromptProperties) => {
-  const hintLine = route
-    ? `${SESSION_CONSTANTS.HINT_ROUTE_PREFIX}${route}`
-    : SESSION_CONSTANTS.HINT_READY;
+  const hintLine =
+    route === null
+      ? SESSION_CONSTANTS.HINT_READY
+      : `${SESSION_CONSTANTS.HINT_ROUTE_PREFIX}${route}`;
   const isPopVisible = pop !== null;
   const isPopOpen = pop === "open";
   const highlight = Math.min(hl, Math.max(0, filtered.length - 1));
-  const activeOption = filtered[highlight];
   const activeDescendant =
-    isPopOpen && activeOption !== undefined
-      ? optionId(activeOption.name)
+    isPopOpen && filtered.length > 0
+      ? optionId(filtered[highlight].name)
       : undefined;
 
   return (
@@ -78,7 +78,9 @@ export const PortfolioPrompt = ({
             spellCheck={false}
             autoComplete="off"
             placeholder={SESSION_CONSTANTS.PROMPT_PLACEHOLDER}
-            onChange={(event) => onInputChange(event.target.value)}
+            onChange={(event) => {
+              onInputChange(event.target.value);
+            }}
             onKeyDown={onKeyDown}
             onFocus={onFocus}
             onBlur={onBlur}
@@ -112,8 +114,12 @@ export const PortfolioPrompt = ({
                 name={option.name}
                 desc={option.desc}
                 active={index === highlight}
-                onClick={() => onPick(option.name)}
-                onMouseEnter={() => onHover(index)}
+                onClick={() => {
+                  onPick(option.name);
+                }}
+                onMouseEnter={() => {
+                  onHover(index);
+                }}
               />
             ))}
             {filtered.length === 0 ? (

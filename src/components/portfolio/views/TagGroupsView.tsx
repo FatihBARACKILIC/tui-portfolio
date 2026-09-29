@@ -19,12 +19,12 @@ export const tagGroupVariants = cva("", {
   },
 });
 
-type TagGroup = {
+interface TagGroup {
   key: string;
   label: string;
   note?: string;
   items: readonly string[];
-};
+}
 
 type TagGroupsViewProperties = {
   items: readonly TagGroup[];
@@ -54,7 +54,7 @@ export const TagGroupsView = ({
                 <h2 className="text-accent text-[0.68rem] tracking-[0.14em]">
                   {group.label}
                 </h2>
-                {group.note ? (
+                {group.note !== undefined && group.note.length > 0 ? (
                   <span className="text-muted text-[0.7rem]">{group.note}</span>
                 ) : null}
               </div>

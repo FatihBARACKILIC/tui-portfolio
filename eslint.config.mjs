@@ -64,12 +64,34 @@ export default [
   {
     files: ["src/**/*.{ts,tsx}"],
     rules: {
+      "@typescript-eslint/naming-convention": [
+        "error",
+        {
+          format: ["camelCase", "PascalCase", "snake_case", "UPPER_CASE"],
+          leadingUnderscore: "allow",
+          selector: "default",
+        },
+        {
+          format: null,
+          modifiers: ["requiresQuotes"],
+          selector: "objectLiteralProperty",
+        },
+      ],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          ignoreRestSiblings: true,
+          varsIgnorePattern: "^_",
+        },
+      ],
       complexity: ["error", { max: 25 }],
       "func-style": "off",
       "github/filenames-match-regex": "off",
       "no-magic-numbers": "off",
       // Base rule false-positives on callback param names in type positions
       "no-unused-vars": "off",
+      "sonarjs/function-return-type": "off",
       "sonarjs/max-union-size": "off",
       "sonarjs/non-number-in-arithmetic-expression": "off",
       "sonarjs/no-unused-vars": "off",

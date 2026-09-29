@@ -16,10 +16,7 @@ const cellLevel = (index: number): "l0" | "l1" | "l2" | "l3" | "l4" => {
   if (value > 0.4) {
     return "l2";
   }
-  if (value > 0.18) {
-    return "l1";
-  }
-  return "l0";
+  return value > 0.18 ? "l1" : "l0";
 };
 
 export const ContribGraph = () => {

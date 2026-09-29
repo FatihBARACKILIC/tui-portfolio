@@ -20,7 +20,12 @@ export const ResumeView = () => (
             {RESUME_CONSTANTS.FILE_META}
           </div>
         </div>
-        <Button variant="accent" onClick={() => window.print()}>
+        <Button
+          variant="accent"
+          onClick={() => {
+            window.print();
+          }}
+        >
           {RESUME_CONSTANTS.DOWNLOAD_LABEL}
         </Button>
       </Surface>

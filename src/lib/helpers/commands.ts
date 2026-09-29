@@ -14,10 +14,9 @@ export const findCommand = (name: string): Command | undefined => {
 
 export const findRoutableCommand = (name: string): CommandName | null => {
   const command = findCommand(name);
-  if (command === undefined || command.name === clearCommand) {
-    return null;
-  }
-  return command.name;
+  return command === undefined || command.name === clearCommand
+    ? null
+    : command.name;
 };
 
 export const filterCommands = (input: string): Command[] => {

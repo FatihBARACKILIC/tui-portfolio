@@ -51,10 +51,7 @@ export const readLocation = (pathname: string): PortfolioLocation => {
   }
 
   const route = findRoutableCommand(segment);
-  if (route === null) {
-    return { err: segment, route: null };
-  }
-  return { err: null, route };
+  return route === null ? { err: segment, route: null } : { err: null, route };
 };
 
 export const getInitialLocation = (): PortfolioLocation => {
@@ -64,11 +61,9 @@ export const getInitialLocation = (): PortfolioLocation => {
   }
 
   const start = SESSION_CONSTANTS.START_ROUTE.trim();
-  if (start.length === 0) {
-    return fromUrl;
-  }
-
-  return { err: null, route: findRoutableCommand(start) };
+  return start.length === 0
+    ? fromUrl
+    : { err: null, route: findRoutableCommand(start) };
 };
 
 const stripTrailingSlashes = (value: string): string => {
