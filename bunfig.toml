@@ -1,6 +1,6 @@
 [install]
 exact = true
 minimumReleaseAge = 2592000
-minimumReleaseAgeExcludes = ["typescript", "@types/node", "@types/bun"]
+minimumReleaseAgeExcludes = ["typescript", "@types/node", "@types/bun", "storybook@10.6.5", "eslint-plugin-storybook@10.6.5"]
 [install.security]
 scanner = "@socketsecurity/bun-security-scanner"
